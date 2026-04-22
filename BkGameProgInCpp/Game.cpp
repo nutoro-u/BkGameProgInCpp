@@ -97,30 +97,3 @@ void Game::ShowFps(AppState * appState)
 	SDL_RenderDebugText(mRenderer, x, y, message.c_str());
 }
 #endif
-
-//void Game::RunLoop()
-//{
-//	const int FPS = 60;
-//	const int FRAME_DELAY = 1000 / FPS; // 16.66ms per frame
-//
-//	Uint32 frameStart;
-//	int frameTime;
-//
-//	while (mIsRunning)
-//	{
-//		frameStart = SDL_GetTicks();
-//
-//     // 1. Handle Events (input)
-    // 2. Update Game Logic
-    // 3. Render Graphics
-// 
-//		// Calculate time taken for this frame
-//		frameTime = SDL_GetTicks() - frameStart;
-//
-//		// 4. Delay to maintain FPS
-//		if (FRAME_DELAY > frameTime)
-//			SDL_Delay(FRAME_DELAY - frameTime);
-//
-//		SDL_Log("frame delay: %d", FRAME_DELAY - frameTime);
-//	}
-//}
