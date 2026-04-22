@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Math.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SDL\VisualC\SDL\SDL.vcxproj">
