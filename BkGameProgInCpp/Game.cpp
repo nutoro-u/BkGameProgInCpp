@@ -5,8 +5,12 @@
 #include <sstream>
 
 Game::Game() :
-	mWindow(nullptr)
-	, mRenderer(nullptr)
+	mWindow(nullptr),
+	mRenderer(nullptr)
+#if _DEBUG
+	,showFpsTimer(showFpsDuration),
+	fpsOld(0.0)
+#endif
 {
 }
 
@@ -18,6 +22,7 @@ bool Game::Initialize()
 		SDL_Log("Couldn't create window and renderer: %s", SDL_GetError());
 		return false;
 	}
+	SDL_SetWindowFullscreen(mWindow, true);
 
 	return true;
 }
@@ -33,14 +38,6 @@ SDL_AppResult Game::ProcessInput(SDL_Event* event)
 	case SDL_EVENT_QUIT:
 		return SDL_APP_SUCCESS;
 	}
-
-	// Get state of keyboard
-	/*const bool* state = SDL_GetKeyboardState(NULL);
-
-	if (state[SDL_SCANCODE_ESCAPE])
-	{
-		mIsRunning = false;
-	}*/
 
 	return SDL_APP_CONTINUE;
 }
