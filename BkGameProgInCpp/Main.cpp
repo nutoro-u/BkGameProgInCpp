@@ -41,7 +41,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 	AppState *as = (AppState *)appstate;
 	// Calculate duration since last call
 	Uint64 now = SDL_GetTicksNS();
-	as->delta_time = (double)(now - as->last_time) / 1000000000.0;
+	as->delta_time = (float)(now - as->last_time) / 1000000000.0f;
 	as->fps = 1.0 / as->delta_time;
 	as->last_time = now;
 

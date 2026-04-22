@@ -4,8 +4,8 @@
 typedef struct
 {
 	Uint64 last_time;
-	double delta_time; // Frame duration in seconds
-	double fps;
+	float delta_time; // Frame duration in seconds
+	float fps;
 } AppState;
 
 class Game
@@ -25,9 +25,9 @@ private:
 #if _DEBUG
 	void ShowFps(AppState* appState);
 
-	double showFpsTimer{ showFpsDuration };
-	const double showFpsDuration{ 1.0 };
-	double fpsOld{ 0.0 };
+	float showFpsTimer{ showFpsDuration };
+	const float showFpsDuration{ 1.0f };
+	float fpsOld{ 0.0f };
 #endif
 
 	SDL_Window* mWindow;
