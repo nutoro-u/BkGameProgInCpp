@@ -6,6 +6,12 @@ static Game* game;
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
+	AppState *as = (AppState *)SDL_calloc(1, sizeof(AppState));
+	if (!as) return SDL_APP_FAILURE;
+
+	as->last_time = SDL_GetTicksNS(); // Initial timestamp
+	*appstate = as;
+
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -18,13 +24,12 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-	
+
 	game = new Game();
 	bool success = game->Initialize();
 
 	return success ? SDL_APP_CONTINUE : SDL_APP_FAILURE;
 }
-
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
@@ -33,14 +38,23 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
+	AppState *as = (AppState *)appstate;
+	// Calculate duration since last call
+	Uint64 now = SDL_GetTicksNS();
+	as->delta_time = (double)(now - as->last_time) / 1000000000.0;
+	as->last_time = now;
+
 	game->UpdateGame();
 	game->GenerateOutput();
+	
+	SDL_Log("Fps: %.f ", 1.0 / as->delta_time);
 
 	return SDL_APP_CONTINUE;
 }
 
 void SDL_AppQuit(void *appstate, SDL_AppResult result)
 {
+	SDL_free(appstate);
 }
 
 //int main(int argc, char** argv)

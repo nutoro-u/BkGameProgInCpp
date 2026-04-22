@@ -1,6 +1,12 @@
 #pragma once
 #include "SDL3/SDL.h"
 
+typedef struct
+{
+	Uint64 last_time;
+	double delta_time; // Frame duration in seconds
+} AppState;
+
 struct Vector2
 {
 	float x;
@@ -26,7 +32,4 @@ public:
 private:
 	SDL_Window* mWindow;
 	SDL_Renderer* mRenderer;
-
-	Uint32 mTicksCount;
-	bool mIsRunning;
 };

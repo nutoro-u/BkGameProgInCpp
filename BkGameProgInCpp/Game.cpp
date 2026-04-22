@@ -3,8 +3,6 @@
 Game::Game() :
 	mWindow(nullptr)
 	, mRenderer(nullptr)
-	, mTicksCount(0)
-	, mIsRunning(true)
 {
 }
 
