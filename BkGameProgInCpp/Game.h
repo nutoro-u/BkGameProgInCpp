@@ -5,13 +5,8 @@ typedef struct
 {
 	Uint64 last_time;
 	double delta_time; // Frame duration in seconds
+	double fps;
 } AppState;
-
-struct Vector2
-{
-	float x;
-	float y;
-};
 
 class Game
 {
@@ -19,17 +14,22 @@ public:
 	Game();
 
 	bool Initialize();
-	
-	//void RunLoop();
-	
+
 	SDL_AppResult ProcessInput(SDL_Event* event);
-	
-	void UpdateGame();
-	void GenerateOutput();
+	void UpdateGame(AppState* appState);
+	void GenerateOutput(AppState* appState);
 
 	void Shutdown();
 
 private:
+#if _DEBUG
+	void ShowFps(AppState* appState);
+
+	double showFpsTimer{ showFpsDuration };
+	const double showFpsDuration{ 1.0 };
+	double fpsOld{ 0.0 };
+#endif
+
 	SDL_Window* mWindow;
 	SDL_Renderer* mRenderer;
 };

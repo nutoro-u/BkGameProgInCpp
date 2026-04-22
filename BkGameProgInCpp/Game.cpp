@@ -1,4 +1,8 @@
 #include "Game.h"
+#include <string>
+#include <iostream>
+#include <iomanip> // For std::setprecision and std::fixed
+#include <sstream>
 
 Game::Game() :
 	mWindow(nullptr)
@@ -41,14 +45,19 @@ SDL_AppResult Game::ProcessInput(SDL_Event* event)
 	return SDL_APP_CONTINUE;
 }
 
-void Game::UpdateGame()
+void Game::UpdateGame(AppState* appState)
 {
 }
 
-void Game::GenerateOutput()
+void Game::GenerateOutput(AppState* appState)
 {
 	SDL_SetRenderDrawColor(mRenderer, 32, 32, 64, 255);
 	SDL_RenderClear(mRenderer);
+
+#if _DEBUG
+	ShowFps(appState);
+#endif
+
 	SDL_RenderPresent(mRenderer);
 }
 
@@ -58,6 +67,36 @@ void Game::Shutdown()
 	SDL_DestroyWindow(mWindow);
 	SDL_Quit();
 }
+
+#if _DEBUG
+void Game::ShowFps(AppState * appState)
+{
+	std::ostringstream strFps;
+	strFps << std::fixed << std::setprecision(0) << fpsOld;
+	
+	showFpsTimer -= appState->delta_time;
+	if (showFpsTimer < 0.0)
+	{
+		fpsOld = appState->fps;
+		strFps << std::fixed << std::setprecision(0) << appState->fps;
+		
+		showFpsTimer = showFpsDuration;
+	}
+	std::string message = std::string("Fps: ") + strFps.str();
+
+	int w = 0, h = 0;
+	float x, y;
+	const float scale = 2.0f;
+
+	SDL_GetRenderOutputSize(mRenderer, &w, &h);
+	SDL_SetRenderScale(mRenderer, scale, scale);
+	x = ((w / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * SDL_strlen(message.c_str())) / 2;
+	y = ((h / scale) - SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE);
+
+	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
+	SDL_RenderDebugText(mRenderer, x, y, message.c_str());
+}
+#endif
 
 //void Game::RunLoop()
 //{

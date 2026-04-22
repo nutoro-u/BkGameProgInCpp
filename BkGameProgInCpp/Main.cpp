@@ -42,18 +42,18 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 	// Calculate duration since last call
 	Uint64 now = SDL_GetTicksNS();
 	as->delta_time = (double)(now - as->last_time) / 1000000000.0;
+	as->fps = 1.0 / as->delta_time;
 	as->last_time = now;
 
-	game->UpdateGame();
-	game->GenerateOutput();
-	
-	SDL_Log("Fps: %.f ", 1.0 / as->delta_time);
+	game->UpdateGame(as);
+	game->GenerateOutput(as);
 
 	return SDL_APP_CONTINUE;
 }
 
 void SDL_AppQuit(void *appstate, SDL_AppResult result)
 {
+	game->Shutdown();
 	SDL_free(appstate);
 }
 
